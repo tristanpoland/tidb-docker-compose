@@ -1,0 +1,10 @@
+groups:
+- name: tidb-rules
+  rules:
+  - record: tidb:connection_count
+    expr: tidb_server_connections
+  - alert: TiDB_slow_query
+    expr: histogram_quantile(0.99, sum(rate(tidb_server_handle_query_duration_seconds_bucket[1m])) by (le)) > 1
+    for: 5m
+    labels:
+      severity: warning

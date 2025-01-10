@@ -1,0 +1,5 @@
+groups:
+- name: pd-rules
+  rules:
+  - record: pd:handle_requests:duration_seconds
+    expr: histogram_quantile(0.99, sum(rate(pd_handle_request_duration_seconds_bucket[1m])) by (le, type))

@@ -1,0 +1,10 @@
+groups:
+- name: tikv-rules
+  rules:
+  - record: tikv:node_cpu_usage
+    expr: sum(rate(tikv_thread_cpu_seconds_total[1m])) by (instance)
+  - alert: TiKV_memory_high
+    expr: process_resident_memory_bytes{job="tikv"} > 2e10
+    for: 5m
+    labels:
+      severity: warning
